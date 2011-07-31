@@ -267,6 +267,8 @@ void W_ThrowWeapon(vector velo, vector delta, float doreduce)
 	w = self.weapon;
 	if (w == 0)
 		return; // just in case
+	if(MUTATOR_CALLHOOK(ForbidThrowCurrentWeapon))
+	        return;
 	if (g_weaponarena)
 		return;
 	if (g_lms)
@@ -312,8 +314,14 @@ void W_WeaponFrame()
 	if (frametime)
 		self.weapon_frametime = frametime;
 
-	if(((arena_roundbased || g_ca) && time < warmup) || ((time < game_starttime) && !cvar("sv_ready_restart_after_countdown")))
+	if(((arena_roundbased || g_ca || g_freezetag || g_freeze) && time < warmup) || ((time < game_starttime) && !cvar("sv_ready_restart_after_countdown")))
 		return;
+		
+       if(g_freezetag && self.freezetag_frozen == 1)
+                return;
+                
+       if(g_freeze && self.freeze_frozen == 1)
+                return;
 
 	if (!self.weaponentity || self.health < 1)
 		return; // Dead player can't use weapons and injure impulse commands

@@ -17,8 +17,8 @@ float require_spawnfunc_prefix; // if this float exists, only functions with spa
 
 float ctf_score_value(string parameter);
 
-float g_dm, g_domination, g_ctf, g_tdm, g_keyhunt, g_onslaught, g_assault, g_arena, g_ca, g_lms, g_runematch, g_race, g_nexball, g_cts;
-float g_cloaked, g_footsteps, g_jump_grunt, g_grappling_hook, g_laserguided_missile, g_midair, g_minstagib, g_nixnex, g_nixnex_with_laser, g_pinata, g_norecoil, g_vampire, g_minstagib_invis_alpha, g_bloodloss;
+float g_dm, g_domination, g_ctf, g_tdm, g_keyhunt, g_onslaught, g_assault, g_arena, g_ca, g_lms, g_runematch, g_race, g_nexball, g_cts, g_freezetag, g_keepaway;
+float g_cloaked, g_footsteps, g_jump_grunt, g_grappling_hook, g_laserguided_missile, g_midair, g_minstagib, g_nixnex, g_nixnex_with_laser, g_pinata, g_norecoil, g_vampire, g_minstagib_invis_alpha, g_bloodloss, g_freeze;
 float g_warmup_limit;
 float g_warmup_allguns;
 float g_warmup_allow_timeout;
@@ -555,7 +555,7 @@ void target_voicescript_clear(entity pl);
 .float trigger_reverse;
 
 // Nexball
-.entity ballcarried;
+.entity ballcarried; // Also used for keepaway
 .float metertime;
 float g_nexball_meter_period;
 
@@ -637,3 +637,13 @@ string deathmessage;
 
 .float cvar_cl_accuracy_data_share;
 .float cvar_cl_accuracy_data_receive;
+
+float allowed_to_spawn; // boolean variable used by the clan arena code to determine if a player can spawn (after the round has ended)
+
+.float freezetag_frozen;
+.float freezetag_beginrevive_time;
+.float freezetag_revive_progress;
+
+.float freeze_frozen;
+.float freeze_beginrevive_time;
+.float freeze_revive_progress;

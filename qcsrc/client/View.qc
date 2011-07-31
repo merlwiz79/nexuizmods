@@ -597,7 +597,7 @@ void CSQC_UpdateView(float w, float h)
 	else if(hud == HUD_WAKIZASHI)
         CSQC_WAKIZASHI_HUD();
 	else
-	{
+	{	
 		if(cvar("r_letterbox") == 0)
 			if(cvar("viewsize") < 120)
 				CSQC_common_hud();

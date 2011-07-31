@@ -99,6 +99,7 @@ void WriteGameCvars()
 	cvar_set("g_race", ftos(g_race));
 	cvar_set("g_nexball", ftos(g_nexball));
 	cvar_set("g_cts", ftos(g_cts));
+	cvar_set("g_freezetag", ftos(g_freezetag));
 }
 
 void ReadGameCvars()
@@ -125,6 +126,7 @@ void ReadGameCvars()
 		found += (g_race = (!found && (prev != GAME_RACE) && cvar("g_race")));
 		found += (g_nexball = (!found && (prev != GAME_NEXBALL) && cvar("g_nexball")));
 		found += (g_cts = (!found && (prev != GAME_CTS) && cvar("g_cts")));
+		found += (g_freezetag = (!found && (prev != GAME_FREEZETAG) && cvar("g_freezetag")));
 
 		if(found)
 			break;
@@ -258,7 +260,7 @@ void InitGameplayMode()
 		ctf_init();
 		have_team_spawns = -1; // request team spawns
 	}
-
+	
 	if(g_runematch)
 	{
 		game = GAME_RUNEMATCH;
@@ -314,6 +316,16 @@ void InitGameplayMode()
 		leadlimit_override = cvar("g_keyhunt_point_leadlimit");
 		kh_init();
 	}
+	
+        if(g_freezetag)
+        {
+                game = GAME_FREEZETAG;
+                gamemode_name = "Freeze Tag";
+                ActivateTeamplay();
+                fraglimit_override = cvar("g_freezetag_point_limit");
+                leadlimit_override = cvar("g_freezetag_point_leadlimit"); 
+                MUTATOR_ADD(gamemode_freezetag);
+        }
 
 	if(g_assault)
 	{
@@ -507,6 +519,8 @@ void PrintWelcomeMessage(entity pl)
 		modifications = strcat(modifications, ", Low gravity");
 	if(g_cloaked)
 		modifications = strcat(modifications, ", Cloaked");
+	if(g_freeze)
+		modifications = strcat(modifications, ", Freeze");
 	if(g_footsteps)
 		modifications = strcat(modifications, ", Steps");
 	if(g_grappling_hook)
@@ -800,6 +814,8 @@ float FindSmallestTeam(entity pl, float ignore_pl)
 			error("Too few teams available for ctf\n");
 		else if(g_keyhunt)
 			error("Too few teams available for key hunt\n");
+		else if(g_freezetag)
+			error("Too few teams available for freeze tag\n");
 		else
 			error("Too few teams available for team deathmatch\n");
 	}

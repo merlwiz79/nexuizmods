@@ -345,9 +345,11 @@ float _MapInfo_Generate(string pFilename) // 0: failure, 1: ok ent, 2: ok bsp
 		MapInfo_Map_supportedGametypes |= MAPINFO_TYPE_DEATHMATCH;      // DM always works
 		MapInfo_Map_supportedGametypes |= MAPINFO_TYPE_RUNEMATCH;       // Rune always works
 		MapInfo_Map_supportedGametypes |= MAPINFO_TYPE_LMS;             // LMS always works
+		MapInfo_Map_supportedGametypes |= MAPINFO_TYPE_KEEPAWAY;	// Keepaway always works
 
 		if(spawnpoints >= 8  && diameter > 4096) {
 			MapInfo_Map_supportedGametypes |= MAPINFO_TYPE_TEAM_DEATHMATCH;
+			MapInfo_Map_supportedGametypes |= MAPINFO_TYPE_FREEZETAG;
 			MapInfo_Map_supportedGametypes |= MAPINFO_TYPE_CA;
 		}
 		if(                     diameter < 4096)
@@ -428,6 +430,16 @@ void _MapInfo_Map_ApplyGametype(string s, float pWantedType, float pThisType)
 		s = cdr(s);
 	}
 
+        /* keepaway wuz here
+	if(pWantedType == MAPINFO_TYPE_KEEPAWAY)
+	{
+		sa = car(s);
+		if(sa != "")
+			cvar_set("fraglimit", sa);
+		s = cdr(s);
+	}
+	*/
+
 	// rc = timelimit timelimit_qualification laps laps_teamplay
 	if(pWantedType == MAPINFO_TYPE_RACE)
 	{
@@ -475,6 +487,8 @@ float MapInfo_Type_FromString(string t)
 	else if(t == "rc")      return MAPINFO_TYPE_RACE;
 	else if(t == "nexball") return MAPINFO_TYPE_NEXBALL;
 	else if(t == "cts")     return MAPINFO_TYPE_CTS;
+	else if(t == "freezetag")     return MAPINFO_TYPE_FREEZETAG;
+	else if(t == "keepaway")     return MAPINFO_TYPE_KEEPAWAY;
 	else if(t == "all")     return MAPINFO_TYPE_ALL;
 	else                    return 0;
 }
@@ -662,6 +676,8 @@ float MapInfo_Get_ByName(string pFilename, float pAllowGenerate, float pGametype
 		if(MapInfo_Map_supportedGametypes & MAPINFO_TYPE_ONSLAUGHT)       fputs(fh, "type ons 20\n");
 		if(MapInfo_Map_supportedGametypes & MAPINFO_TYPE_NEXBALL)         fputs(fh, "type nexball 5 20\n");
 		if(MapInfo_Map_supportedGametypes & MAPINFO_TYPE_CTS)             fputs(fh, "type cts 20 -1\n");
+		if(MapInfo_Map_supportedGametypes & MAPINFO_TYPE_FREEZETAG)       fputs(fh, "type freezetag 10 20\n");
+		if(MapInfo_Map_supportedGametypes & MAPINFO_TYPE_KEEPAWAY)        fputs(fh, "type keepaway 30 20\n");
 
 		fh2 = fopen(strcat("scripts/", pFilename, ".arena"), FILE_READ);
 		if(fh2 >= 0)
@@ -927,6 +943,10 @@ float MapInfo_CurrentGametype()
 		return MAPINFO_TYPE_NEXBALL;
 	else if(cvar("g_cts"))
 		return MAPINFO_TYPE_CTS;
+	else if(cvar("g_freezetag"))
+		return MAPINFO_TYPE_FREEZETAG;
+	else if(cvar("g_keepaway"))
+		return MAPINFO_TYPE_KEEPAWAY;		
 	else
 		return MAPINFO_TYPE_DEATHMATCH;
 }
@@ -967,7 +987,9 @@ string MapInfo_GetGameTypeCvar(float t)
 		case MAPINFO_TYPE_ONSLAUGHT: return "g_onslaught";
 		case MAPINFO_TYPE_RACE: return "g_race";
 		case MAPINFO_TYPE_NEXBALL: return "g_nexball";
+		case MAPINFO_TYPE_FREEZETAG: return "g_freezetag";
 		case MAPINFO_TYPE_CTS: return "g_cts";
+		case MAPINFO_TYPE_KEEPAWAY: 		return "g_keepaway";
 		default: return "";
 	}
 }
@@ -989,6 +1011,8 @@ void MapInfo_SwitchGameType(float t)
 	cvar_set("g_race",       (t == MAPINFO_TYPE_RACE)            ? "1" : "0");
 	cvar_set("g_nexball",    (t == MAPINFO_TYPE_NEXBALL)         ? "1" : "0");
 	cvar_set("g_cts",        (t == MAPINFO_TYPE_CTS)             ? "1" : "0");
+	cvar_set("g_freezetag",  (t == MAPINFO_TYPE_FREEZETAG)       ? "1" : "0");
+	cvar_set("g_keepaway",   (t == MAPINFO_TYPE_KEEPAWAY)        ? "1" : "0");
 }
 
 void MapInfo_LoadMap(string s)

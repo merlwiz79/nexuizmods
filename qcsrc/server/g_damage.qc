@@ -146,6 +146,20 @@ void GiveFrags (entity attacker, entity targ, float f)
 	}
 
 	// FIXME fix the mess this is (we have REAL points now!)
+	entity oldself;
+	oldself = self;
+	self = attacker;
+	frag_attacker = attacker;
+	frag_target = targ;
+	frag_score = f;
+	if(MUTATOR_CALLHOOK(GiveFragsForKill))
+	{
+		f = frag_score;
+		self = oldself;
+	}
+	else
+	{
+		self = oldself;
 	if(g_runematch)
 	{
 		f = RunematchHandleFrags(attacker, targ, f);
@@ -174,6 +188,54 @@ void GiveFrags (entity attacker, entity targ, float f)
 	{
 		if(g_ctf_ignore_frags)
 			f = 0;
+	}
+
+	attacker.totalfrags += f;
+
+	if(f)
+		UpdateFrags(attacker, f);
+}
+
+	// FIXME fix the mess this is (we have REAL points now!)
+	entity oldself;
+	oldself = self;
+	self = attacker;
+	frag_attacker = attacker;
+	frag_target = targ;
+	frag_score = f;
+	if(MUTATOR_CALLHOOK(GiveFragsForKill))
+	{
+		f = frag_score;
+		self = oldself;
+	}
+	else
+	{
+		self = oldself;
+		if(g_runematch)
+		{
+			f = RunematchHandleFrags(attacker, targ, f);
+		}
+		else if(g_lms)
+		{
+			// remove a life
+			float tl;
+			tl = PlayerScore_Add(targ, SP_LMS_LIVES, -1);
+			if(tl < lms_lowest_lives)
+				lms_lowest_lives = tl;
+			if(tl <= 0)
+			{
+				if(!lms_next_place)
+					lms_next_place = player_count;
+				PlayerScore_Add(targ, SP_LMS_RANK, lms_next_place); // won't ever spawn again
+				--lms_next_place;
+			}
+			f = 0;
+		}
+		else if(g_ctf)
+		{
+			if(g_ctf_ignore_frags)
+				f = 0;
+		}
 	}
 
 	attacker.totalfrags += f;
@@ -679,7 +741,7 @@ void Damage (entity targ, entity inflictor, entity attacker, float damage, float
 		if (!targ.isbot)
 		if (attacker.isbot)
 			damage = damage * bound(0.1, (skill + 5) * 0.1, 1);
-
+			
 		// nullify damage if teamplay is on
 		if(deathtype != DEATH_TELEFRAG)
 		if(attacker.classname == "player")
@@ -778,6 +840,14 @@ void Damage (entity targ, entity inflictor, entity attacker, float damage, float
 			mirrorforce *= g_weaponforcefactor;
 		}
 
+		frag_attacker = attacker;
+		frag_target = targ;
+		frag_damage = damage;
+		frag_force = force;
+		MUTATOR_CALLHOOK(PlayerDamage_Calculate);
+		damage = frag_damage;
+		force = frag_force;
+		
 		// apply strength multiplier
 		if ((attacker.items & IT_STRENGTH) && !g_minstagib)
 		{
@@ -902,6 +972,8 @@ void Damage (entity targ, entity inflictor, entity attacker, float damage, float
 							if(deathtype & HITTYPE_HEADSHOT)
 								headshot = 1;
 						}
+						if(g_ca)
+                                              		PlayerScore_Add(attacker, SP_SCORE, damage * cvar("g_ca_damage2score_multiplier"));					                                                       				                                                                    
 					}
 				}
 				else

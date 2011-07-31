@@ -289,6 +289,8 @@ void cvar_changes_init()
 		BADCVAR("g_ctf");
 		BADCVAR("g_dm");
 		BADCVAR("g_domination");
+		BADCVAR("g_freezetag");
+		BADCVAR("g_keepaway");
 		BADCVAR("g_keyhunt");
 		BADCVAR("g_keyhunt_teams");
 		BADCVAR("g_onslaught");
@@ -437,6 +439,8 @@ void spawnfunc_worldspawn (void)
 
 	compressShortVector_init();
 
+        allowed_to_spawn = TRUE;
+       
 	local entity head;
 	head = nextent(world);
 	maxclients = 0;
@@ -631,6 +635,27 @@ void spawnfunc_worldspawn (void)
 	addstat(STAT_SHOTORG, AS_INT, stat_shotorg);
 	addstat(STAT_LEADLIMIT, AS_FLOAT, stat_leadlimit);
 	addstat(STAT_BULLETS_LOADED, AS_INT, campingrifle_bulletcounter);
+	
+	if(g_ca || g_freezetag || g_freeze)
+	{
+		addstat(STAT_REDALIVE, AS_INT, redalive_stat);
+		addstat(STAT_BLUEALIVE, AS_INT, bluealive_stat);
+		addstat(STAT_YELLOWALIVE, AS_INT, yellowalive_stat);
+		addstat(STAT_PINKALIVE, AS_INT, pinkalive_stat);
+	}
+
+	if(g_freezetag)
+	{
+		addstat(STAT_FROZEN, AS_INT, freezetag_frozen);
+		addstat(STAT_REVIVE_PROGRESS, AS_FLOAT, freezetag_revive_progress);
+	}
+	
+
+	if(g_freeze)
+	{
+		addstat(STAT_FROZEN, AS_INT, freeze_frozen);
+		addstat(STAT_REVIVE_PROGRESS, AS_FLOAT, freeze_revive_progress);
+	}
 
 	next_pingtime = time + 5;
 	InitializeEntity(self, cvar_changes_init, INITPRIO_CVARS);

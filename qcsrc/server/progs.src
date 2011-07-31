@@ -20,6 +20,11 @@ constants.qh
 
 defs.qh		// Should rename this, it has fields and globals
 
+mutators/base.qh
+mutators/mutators.qh
+// mutators/gamemode_keyhunt.qh // TODO add this
+mutators/mutator_dodging.qh
+
 //// tZork Turrets ////
 tturrets/include/turrets_early.qh
 
@@ -169,6 +174,16 @@ playerdemo.qc
 
 anticheat.qc
 cheats.qc
+
+mutators/base.qc
+mutators/gamemode_freezetag.qc
+// mutators/gamemode_keepaway.qc
+// mutators/gamemode_keyhunt.qh // TODO add this
+mutators/mutator_freeze.qc
+mutators/mutator_nix.qc
+mutators/mutator_dodging.qc
+mutators/mutator_rocketflying.qc
+mutators/mutator_vampire.qc
 
 ../warpzonelib/anglestransform.qc
 ../warpzonelib/mathlib.qc

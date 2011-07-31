@@ -28,6 +28,8 @@ CLASS(NexuizMapInfoDialog) EXTENDS(NexuizDialog)
 	ATTRIB(NexuizMapInfoDialog, typeRaceLabel, entity, NULL)
 	ATTRIB(NexuizMapInfoDialog, typeCTSLabel, entity, NULL)
 	ATTRIB(NexuizMapInfoDialog, typeNexballLabel, entity, NULL)
+	ATTRIB(NexuizMapInfoDialog, typeFreezetagLabel, entity, NULL)
+	ATTRIB(NexuizMapInfoDialog, typeKeepawayLabel, entity, NULL)
 
 	ATTRIB(NexuizMapInfoDialog, currentMapIndex, float, 0)
 	ATTRIB(NexuizMapInfoDialog, currentMapBSPName, string, string_null)
@@ -83,6 +85,8 @@ void loadMapInfoNexuizMapInfoDialog(entity me, float i, entity mlb)
 	me.typeRaceLabel.disabled = !(MapInfo_Map_supportedGametypes & MAPINFO_TYPE_RACE);
 	me.typeCTSLabel.disabled = !(MapInfo_Map_supportedGametypes & MAPINFO_TYPE_CTS);
 	me.typeNexballLabel.disabled = !(MapInfo_Map_supportedGametypes & MAPINFO_TYPE_NEXBALL);
+	me.typeFreezetagLabel.disabled = !(MapInfo_Map_supportedGametypes & MAPINFO_TYPE_FREEZETAG);
+	me.typeKeepawayLabel.disabled = !(MapInfo_Map_supportedGametypes & MAPINFO_TYPE_KEEPAWAY);
 
 	MapInfo_ClearTemps();
 }
@@ -148,6 +152,10 @@ void fillNexuizMapInfoDialog(entity me)
 			me.typeCTSLabel = e;
 		me.TD(me, 1, wgt, e = makeNexuizTextLabel(0, "Nexball"));
 			me.typeNexballLabel = e;
+		me.TD(me, 1, wgt, e = makeNexuizTextLabel(0, "Freezetag"));
+			me.typeFreezetagLabel = e;
+		me.TD(me, 1, wgt, e = makeNexuizTextLabel(0, "Nexball"));
+			me.typeKeepawayLabel = e;
 
 	me.gotoRC(me, me.rows - 2, 0);
 		me.TD(me, 1, me.columns, e = makeNexuizTextLabel(0.5, ""));

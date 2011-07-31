@@ -16,6 +16,15 @@ compiling ../common/constants.qh
 compiling ../common/util.qh
 compiling ../common/items.qh
 compiling defs.qh
+in function reference_stats_hit (line 608),
+defs.qh:608: warning: Assignment to constant stats_hit
+defs.qh:605:    stats_hit  is defined here
+in function reference_stats_fired (line 609),
+defs.qh:609: warning: Assignment to constant stats_fired
+defs.qh:606:    stats_fired  is defined here
+compiling mutators/base.qh
+compiling mutators/mutators.qh
+compiling mutators/mutator_dodging.qh
 compiling tturrets/include/turrets_early.qh
 #message:  "with tZork turrets
 compiling campaign.qh
@@ -39,12 +48,23 @@ compiling scores_rules.qc
 compiling miscfunctions.qc
 compiling waypointsprites.qc
 compiling bot/bot.qc
+in function reference_bot_places (line 66),
+bot/scripting.qc:66: warning: Assignment to constant bot_places
+bot/scripting.qc:66:    bot_places  is defined here
+in function reference_bot_placenames (line 67),
+bot/scripting.qc:67: warning: Assignment to constant bot_placenames
+bot/scripting.qc:67:    bot_placenames  is defined here
 compiling g_subs.qc
 compiling g_tetris.qc
 compiling runematch.qc
 compiling arena.qc
 compiling g_violence.qc
 compiling g_damage.qc
+in function GiveFrags (line 97),
+g_damage.qc:200: warning: oldself duplicate definition ignored
+g_damage.qc:149:    oldself  is defined here
+g_damage.qc:221: warning: tl duplicate definition ignored
+g_damage.qc:174:    tl  is defined here
 compiling teamplay.qc
 compiling cl_physics.qc
 compiling verbstack.qc
@@ -107,40 +127,25 @@ compiling csqcprojectile.qc
 compiling playerdemo.qc
 compiling anticheat.qc
 compiling cheats.qc
+compiling mutators/base.qc
+compiling mutators/gamemode_freezetag.qc
+compiling mutators/mutator_freeze.qc
+compiling mutators/mutator_nix.qc
+compiling mutators/mutator_dodging.qc
+compiling mutators/mutator_rocketflying.qc
+compiling mutators/mutator_vampire.qc
 compiling ../warpzonelib/anglestransform.qc
 compiling ../warpzonelib/mathlib.qc
 compiling ../warpzonelib/common.qc
 compiling ../warpzonelib/util_server.qc
 compiling ../warpzonelib/server.qc
-Recognised progs as NetQuake server gamecode
 An enhanced executor will be required (FTE/QF/KK)
-373600 strofs (of 1000000)
-167875 numstatements (of 524288)
-  2531 numfunctions (of 16384)
- 34517 numglobaldefs (of 65536)
-  2050 numfielddefs (1812 unique) (of 2048)
- 36664 numpr_globals (of 65536)
-Writing ../../progs.dat
-2247096 TOTAL SIZE
-Not writing linenumbers file due to conflicting optimisation
-103 unique precache_sounds
-145 unique precache_models
-Compile Complete
-
-optres_shortenifnots 703
-optres_overlaptemps 65616
-optres_noduplicatestrings 46435
-optres_constantarithmatic 443
-optres_nonvec_parms 26332
-optres_filenames 3118
-optres_assignments 3697
-optres_unreferenced 239
-optres_locals 166586
-optres_function_names 2849
-optres_dupconstdefs 469
-optres_return_only 668
-optres_compound_jumps 2216
-optres_stripfunctions 2097
-optres_logicops 1361
-numtemps 1395
-0 warnings
+at global scope,
+note: You can use the noref prefix or pragma to silence this message.
+mutators/base.qh:64: warning: HOOK_MatchEnd  no references
+mutators/base.qh:67: warning: HOOK_GetTeamCount  no references
+mutators/base.qh:70: warning: ret_float  no references
+mutators/base.qh:158: warning: olditems  no references
+../warpzonelib/server.qc:283: warning: e  no references
+../warpzonelib/server.qc:307: warning: e  no references
+12 warnings

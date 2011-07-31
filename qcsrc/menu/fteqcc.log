@@ -22,6 +22,63 @@ compiling oo/constructors.h
 compiling classes.c
 compiling oo/implementation.h
 compiling classes.c
+in function configureAnimationAnimation (line 3),
+anim/animation.c:31: warning: Local "setter" defined with name of a global
+anim/animation.c:31: warning: Local "startTime" defined with name of a global
+anim/animation.c:31: warning: Local "duration" defined with name of a global
+anim/animation.c:31: warning: Local "startValue" defined with name of a global
+in function tickAnimation (line 9),
+anim/animation.c:68: warning: Local "time" defined with name of a global
+in function calcValueAnimation (line 10),
+anim/animation.c:81: warning: Local "time" defined with name of a global
+anim/animation.c:81: warning: Local "duration" defined with name of a global
+anim/animation.c:81: warning: Local "startValue" defined with name of a global
+anim/animation.c:81: warning: Local "delta" defined with name of a global
+in function setterDummy (line 26),
+anim/animation.c:112: warning: Local "object" defined with name of a global
+anim/animation.c:112: warning: Local "value" defined with name of a global
+in function makeHostedEasing (line 7),
+anim/easing.c:17: warning: Local "setter" defined with name of a global
+anim/easing.c:17: warning: Local "duration" defined with name of a global
+anim/easing.c:17: warning: Local "startValue" defined with name of a global
+in function makeEasing (line 8),
+anim/easing.c:25: warning: Local "setter" defined with name of a global
+anim/easing.c:25: warning: Local "startTime" defined with name of a global
+anim/easing.c:25: warning: Local "duration" defined with name of a global
+anim/easing.c:25: warning: Local "startValue" defined with name of a global
+in function calcValueEasing (line 3),
+anim/easing.c:34: warning: Local "time" defined with name of a global
+anim/easing.c:34: warning: Local "duration" defined with name of a global
+anim/easing.c:34: warning: Local "delta" defined with name of a global
+in function easingLinear (line 9),
+anim/easing.c:44: warning: Local "time" defined with name of a global
+anim/easing.c:44: warning: Local "duration" defined with name of a global
+anim/easing.c:44: warning: Local "delta" defined with name of a global
+in function easingQuadIn (line 10),
+anim/easing.c:49: warning: Local "time" defined with name of a global
+anim/easing.c:49: warning: Local "duration" defined with name of a global
+anim/easing.c:49: warning: Local "delta" defined with name of a global
+in function easingQuadOut (line 11),
+anim/easing.c:55: warning: Local "time" defined with name of a global
+anim/easing.c:55: warning: Local "duration" defined with name of a global
+anim/easing.c:55: warning: Local "delta" defined with name of a global
+in function easingQuadInOut (line 12),
+anim/easing.c:61: warning: Local "time" defined with name of a global
+anim/easing.c:61: warning: Local "duration" defined with name of a global
+anim/easing.c:61: warning: Local "delta" defined with name of a global
+in function makeHostedKeyframe (line 9),
+anim/keyframe.c:15: warning: Local "setter" defined with name of a global
+anim/keyframe.c:15: warning: Local "duration" defined with name of a global
+in function makeKeyframe (line 10),
+anim/keyframe.c:23: warning: Local "setter" defined with name of a global
+anim/keyframe.c:23: warning: Local "duration" defined with name of a global
+in function calcValueKeyframe (line 4),
+anim/keyframe.c:58: warning: Local "time" defined with name of a global
+anim/keyframe.c:58: warning: Local "duration" defined with name of a global
+anim/keyframe.c:58: warning: Local "startValue" defined with name of a global
+anim/keyframe.c:58: warning: Local "delta" defined with name of a global
+in function mouseDragListBox (line 8),
+item/listbox.c:109: warning: Local "delta" defined with name of a global
 compiling ../common/util.qc
 compiling ../common/gamecommand.qc
 compiling gamecommand.qc
@@ -33,33 +90,7 @@ compiling ../common/campaign_setup.qc
 compiling ../common/mapinfo.qc
 compiling ../common/items.qc
 compiling ../warpzonelib/mathlib.qc
-Recognised progs as a DP/FTE Menu module
 Progs should run on any Quake executor
-115096 strofs (of 1000000)
- 46489 numstatements (of 524288)
-  1144 numfunctions (of 16384)
-  9830 numglobaldefs (of 32768)
-  1263 numfielddefs (1220 unique) (of 2048)
- 10437 numpr_globals (of 65536)
-Writing ../../menu.dat
-658872 TOTAL SIZE
-Not writing linenumbers file due to conflicting optimisation
-Compile Complete
-
-optres_shortenifnots 70
-optres_overlaptemps 15438
-optres_noduplicatestrings 31759
-optres_constantarithmatic 84
-optres_nonvec_parms 11244
-optres_filenames 6626
-optres_assignments 794
-optres_unreferenced 345
-optres_locals 40939
-optres_function_names 1914
-optres_dupconstdefs 239
-optres_return_only 405
-optres_compound_jumps 620
-optres_stripfunctions 744
-optres_logicops 222
-numtemps 347
-0 warnings
+at global scope,
+note: You can use the noref prefix or pragma to silence this message.
+42 warnings

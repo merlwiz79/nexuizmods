@@ -427,6 +427,10 @@ void PlayerCorpseDamage (entity inflictor, entity attacker, float damage, float 
 }
 
 void ClientKill_Now_TeamChange();
+void freezetag_CheckWinner();
+void freeze_CheckWinner();
+void freezetag_Unfreeze();
+void freeze_Unfreeze();
 
 void PlayerDamage (entity inflictor, entity attacker, float damage, float deathtype, vector hitloc, vector force)
 {
@@ -475,7 +479,7 @@ void PlayerDamage (entity inflictor, entity attacker, float damage, float deatht
 	else
 		Violence_GibSplash_At(hitloc, force, 2, bound(0, damage, 200) / 16, self, attacker);
 
-	if((g_arena && numspawned < 2) || (g_ca && player_cnt < 2) && !inWarmupStage)
+	if((g_arena && numspawned < 2) || (g_ca && player_count < 2) && !inWarmupStage)
 		return;
 
 	if (!g_minstagib)
@@ -489,7 +493,18 @@ void PlayerDamage (entity inflictor, entity attacker, float damage, float deatht
 		save = 0;
 		take = damage;
 	}
-
+	
+	frag_inflictor = inflictor;
+	frag_attacker = attacker;
+	frag_target = self;
+	damage_take = take;
+	damage_save = save;
+	damage_force = force;
+	MUTATOR_CALLHOOK(PlayerDamage_SplitHealthArmor);
+	MUTATOR_CALLHOOK(PlayerDamage);
+	take = bound(0, damage_take, self.health);
+	save = bound(0, damage_save, self.armorvalue);
+	         
 	if(sound_allowed(MSG_BROADCAST, attacker))
 	{
 		if (save > 10)
@@ -623,16 +638,76 @@ void PlayerDamage (entity inflictor, entity attacker, float damage, float deatht
 			}
 		}
 
-		// become fully visible
-		self.alpha = 1;
-		// clear selected player display
-		ClearSelectedPlayer();
-		// throw a weapon
-		SpawnThrownWeapon (self.origin + (self.mins + self.maxs) * 0.5, self.switchweapon);
+		if(!g_freezetag)
+		{
+			// become fully visible
+			self.alpha = 1;
+			// clear selected player display
+			ClearSelectedPlayer();
+			// throw a weapon
+			SpawnThrownWeapon (self.origin + (self.mins + self.maxs) * 0.5, self.switchweapon);
+		}
+		
+		if(!g_freeze)
+		{
+			// become fully visible
+			self.alpha = 1;
+			// clear selected player display
+			ClearSelectedPlayer();
+			// throw a weapon
+			SpawnThrownWeapon (self.origin + (self.mins + self.maxs) * 0.5, self.switchweapon);
+		}
+		
 		// print an obituary message
 		Obituary (attacker, inflictor, self, deathtype);
 		race_PreDie();
 		DropAllRunes(self);
+		
+		if(deathtype == DEATH_HURTTRIGGER && g_freezetag)
+		{
+			PutClientInServer();
+			count_alive_players(); // re-count players
+			freezetag_CheckWinner();
+			return;
+		}
+		
+		if(deathtype == DEATH_HURTTRIGGER && g_freeze)
+		{
+			race_PreDie();
+			DropAllRunes(self);
+			if(self == attacker)
+				kh_Key_DropAll(self, TRUE);
+			else if(attacker.classname == "player" || attacker.classname == "gib")
+				kh_Key_DropAll(self, FALSE);
+			else
+				kh_Key_DropAll(self, TRUE);
+			
+			if(self.flagcarried)
+			{	
+				if(attacker.classname != "player" && attacker.classname != "gib")
+					DropFlag(self.flagcarried, self, attacker); // penalty for flag loss by suicide
+				else if(attacker.team == self.team)
+					DropFlag(self.flagcarried, attacker, attacker); // penalty for flag loss by suicide/teamkill
+				else
+					DropFlag(self.flagcarried, world, attacker);
+			}
+			if(self.ballcarried && g_nexball)
+				DropBall(self.ballcarried, self.origin, self.velocity);	
+				
+			PutClientInServer();
+			count_alive_players(); // re-count players
+			freeze_CheckWinner();			
+			return;
+		}
+				
+		frag_attacker = attacker;
+		frag_inflictor = inflictor;
+		frag_target = self;
+		MUTATOR_CALLHOOK(PlayerDies);
+
+		if(g_freezetag || g_freeze)
+            return;
+                    	
 		if(self == attacker)
 			kh_Key_DropAll(self, TRUE);
 		else if(attacker.classname == "player" || attacker.classname == "gib")
@@ -648,7 +723,7 @@ void PlayerDamage (entity inflictor, entity attacker, float damage, float deatht
 			else
 				DropFlag(self.flagcarried, world, attacker);
 		}
-		if(self.ballcarried)
+		if(self.ballcarried && g_nexball)
 			DropBall(self.ballcarried, self.origin, self.velocity);
 		Portal_ClearAllLater(self);
 		// clear waypoints

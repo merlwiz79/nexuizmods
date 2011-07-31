@@ -595,6 +595,9 @@ void GetCvars(float f)
 	string s;
 	if (f > 0)
 		s = strcat1(argv(f));
+		
+        get_cvars_f = f;
+        MUTATOR_CALLHOOK(GetCvars);
 	GetCvars_handleFloat(s, f, autoswitch, "cl_autoswitch");
 	GetCvars_handleFloat(s, f, cvar_cl_playerdetailreduction, "cl_playerdetailreduction");
 	GetCvars_handleFloat(s, f, cvar_scr_centertime, "scr_centertime");
@@ -1163,6 +1166,9 @@ float sv_accuracy_data_share;
 
 void readlevelcvars(void)
 {
+       if(cvar("g_freeze"))
+               MUTATOR_ADD(mutator_freeze);
+ 
     g_bugrigs = cvar("g_bugrigs");
     g_bugrigs_planar_movement = cvar("g_bugrigs_planar_movement");
     g_bugrigs_planar_movement_car_jumping = cvar("g_bugrigs_planar_movement_car_jumping");

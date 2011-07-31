@@ -38,6 +38,10 @@ When you press the jump key
 */
 void PlayerJump (void)
 {
+	if(g_freezetag && self.freezetag_frozen)
+		return; // no jumping in freezetag when frozen
+	if(g_freeze && self.freeze_frozen)
+		return; // no jumping when frozen
 	float mjumpheight;
 
 	mjumpheight = cvar("sv_jumpvelocity");
@@ -689,6 +693,8 @@ void SV_PlayerPhysics()
 		bot_think();
 	}
 	
+	MUTATOR_CALLHOOK(PlayerPhysics);
+	
 	self.items &~= IT_USING_JETPACK;
 
 	if(self.classname == "player")
@@ -743,9 +749,12 @@ void SV_PlayerPhysics()
 		maxspd_mod = cvar("g_minstagib_speed_moverate");
 	}
 
-	if(g_nexball && self.ballcarried)
+	if(self.ballcarried)
 	{
-		maxspd_mod = cvar("g_nexball_basketball_carrier_speed");
+		if(g_nexball)
+			maxspd_mod *= cvar("g_nexball_basketball_carrier_speed");
+		else if(g_keepaway)
+			maxspd_mod *= cvar("g_keepaway_ballcarrier_highspeed");
 	}
 
 	swampspd_mod = 1;
@@ -945,6 +954,8 @@ void SV_PlayerPhysics()
 	}
 	else if ((self.items & IT_JETPACK) && self.BUTTON_HOOK && (!cvar("g_jetpack_fuel") || self.ammo_fuel >= 0.01 || self.items & IT_UNLIMITED_WEAPON_AMMO))
 	{
+		if(g_freeze && self.freeze_frozen == 1)
+                	return;
 		//makevectors(self.v_angle_y * '0 1 0');
 		makevectors(self.v_angle);
 		wishvel = v_forward * self.movement_x + v_right * self.movement_y;

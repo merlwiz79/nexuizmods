@@ -582,6 +582,7 @@ void PutObserverInServer (void)
 	}
 
 	DropAllRunes(self);
+	MUTATOR_CALLHOOK(MakePlayerObserver);
 	kh_Key_DropAll(self, TRUE);
 
 	Portal_ClearAll(self);
@@ -589,7 +590,7 @@ void PutObserverInServer (void)
 	if(self.flagcarried)
 		DropFlag(self.flagcarried, world, world);
 
-	if(self.ballcarried)
+	if(self.ballcarried && g_nexball)
 		DropBall(self.ballcarried, self.origin + self.ballcarried.origin, self.velocity);
 
 	WaypointSprite_PlayerDead();
@@ -1037,6 +1038,9 @@ void PutClientInServer (void)
 				SUB_UseTargets();
 			activator = world;
 		self = oldself;
+		
+                MUTATOR_CALLHOOK(PlayerSpawn);
+                
 	} else if(self.classname == "observer" || (g_ca && !allowed_to_spawn)) {
 		PutObserverInServer ();
 	}
@@ -1234,7 +1238,20 @@ void ClientKill_TeamChange (float targetteam) // 0 = don't change, -1 = auto
 
 void ClientKill (void)
 {
-	ClientKill_TeamChange(0);
+	if((g_arena || g_ca) && ((champion && champion.classname == "player" && player_count > 1) || player_count == 1)) // don't allow a kill in this case either
+	{
+		// do nothing
+	}
+    else if(g_freezetag && self.freezetag_frozen == 1)
+    {
+        // do nothing
+    }
+    else if(g_freeze && self.freeze_frozen == 1)
+    {
+        // do nothing
+    }
+	else
+		ClientKill_TeamChange(0);
 }
 
 void DoTeamChange(float destteam)
@@ -1578,13 +1595,14 @@ void ClientDisconnect (void)
 	SoundEntity_Detach(self);
 
 	DropAllRunes(self);
+        MUTATOR_CALLHOOK(ClientDisconnect);
 	kh_Key_DropAll(self, TRUE);
 
 	Portal_ClearAll(self);
 
 	if(self.flagcarried)
 		DropFlag(self.flagcarried, world, world);
-	if(self.ballcarried)
+	if(self.ballcarried && g_nexball)
 		DropBall(self.ballcarried, self.origin + self.ballcarried.origin, self.velocity);
 
 	// Here, everything has been done that requires this player to be a client.
@@ -1861,64 +1879,68 @@ void player_powerups (void)
 				sprint(self, "^3You are on speed\n");
 			}
 		}
-		return;
+
 	}
 
-	if (self.items & IT_STRENGTH)
+	else // if we're not in minstagib, continue. I added this else to replace the "return" which was here that broke the callhook for this function -- This code is nasty.
 	{
-		play_countdown(self.strength_finished, "misc/poweroff.wav");
-		self.effects = self.effects | (EF_BLUE | EF_ADDITIVE | EF_FULLBRIGHT);
-		if (time > self.strength_finished && cvar("g_balance_powerup_timer"))
+               if (self.items & IT_STRENGTH)
 		{
-			self.items = self.items - (self.items & IT_STRENGTH);
-			sprint(self, "^3Strength has worn off\n");
+                       play_countdown(self.strength_finished, "misc/poweroff.wav");
+                       self.effects = self.effects | (EF_BLUE | EF_ADDITIVE | EF_FULLBRIGHT);
+                       if (time > self.strength_finished && cvar("g_balance_powerup_timer"))
+                       {
+                               self.items = self.items - (self.items & IT_STRENGTH);
+                               sprint(self, "^3Strength has worn off\n");
+                       }
 		}
-	}
-	else
-	{
-		if (time < self.strength_finished)
+                else
 		{
-			self.items = self.items | IT_STRENGTH;
-			sprint(self, "^3Strength infuses your weapons with devastating power\n");
+                       if (time < self.strength_finished)
+                       {
+                               self.items = self.items | IT_STRENGTH;
+                               sprint(self, "^3Strength infuses your weapons with devastating power\n");
+                       }
 		}
-	}
-	if (self.items & IT_INVINCIBLE)
-	{
-		play_countdown(self.invincible_finished, "misc/poweroff.wav");
-		self.effects = self.effects | (EF_RED | EF_ADDITIVE | EF_FULLBRIGHT);
-		if (time > self.invincible_finished && cvar("g_balance_powerup_timer"))
+                if (self.items & IT_INVINCIBLE)
 		{
-			self.items = self.items - (self.items & IT_INVINCIBLE);
-			sprint(self, "^3Shield has worn off\n");
+                       play_countdown(self.invincible_finished, "misc/poweroff.wav");
+                       self.effects = self.effects | (EF_RED | EF_ADDITIVE | EF_FULLBRIGHT);
+                       if (time > self.invincible_finished && cvar("g_balance_powerup_timer"))
+                       {
+                               self.items = self.items - (self.items & IT_INVINCIBLE);
+                               sprint(self, "^3Shield has worn off\n");
+                       }
 		}
-	}
-	else
-	{
-		if (time < self.invincible_finished)
+                else
 		{
-			self.items = self.items | IT_INVINCIBLE;
-			sprint(self, "^3Shield surrounds you\n");
+                       if (time < self.invincible_finished)
+                       {
+                               self.items = self.items | IT_INVINCIBLE;
+                               sprint(self, "^3Shield surrounds you\n");
+                       }
 		}
-	}
+               if(cvar("g_nodepthtestplayers"))
+                       self.effects = self.effects | EF_NODEPTHTEST;
 
-	if(cvar("g_nodepthtestplayers"))
-		self.effects = self.effects | EF_NODEPTHTEST;
+               if(cvar("g_fullbrightplayers"))
+                       self.effects = self.effects | EF_FULLBRIGHT;
 
-	if(cvar("g_fullbrightplayers"))
-		self.effects = self.effects | EF_FULLBRIGHT;
+               // midair gamemode: damage only while in the air
+               // if in midair mode, being on ground grants temporary invulnerability
+               // (this is so that multishot weapon don't clear the ground flag on the
+               // first damage in the frame, leaving the player vulnerable to the
+               // remaining hits in the same frame)
+               if (self.flags & FL_ONGROUND)
+               if (g_midair)
+                       self.spawnshieldtime = max(self.spawnshieldtime, time + cvar("g_midair_shieldtime"));
 
-	// midair gamemode: damage only while in the air
-	// if in midair mode, being on ground grants temporary invulnerability
-	// (this is so that multishot weapon don't clear the ground flag on the
-	// first damage in the frame, leaving the player vulnerable to the
-	// remaining hits in the same frame)
-	if (self.flags & FL_ONGROUND)
-	if (g_midair)
-		self.spawnshieldtime = max(self.spawnshieldtime, time + cvar("g_midair_shieldtime"));
-
-	if (time >= game_starttime)
-	if (time < self.spawnshieldtime)
-		self.effects = self.effects | (EF_ADDITIVE | EF_FULLBRIGHT);
+               if (time >= game_starttime)
+               if (time < self.spawnshieldtime)
+                       self.effects = self.effects | (EF_ADDITIVE | EF_FULLBRIGHT);
+       }
+       
+       MUTATOR_CALLHOOK(PlayerPowerups);
 }
 
 float CalcRegen(float current, float stable, float regenfactor, float regenframetime)
@@ -2046,6 +2068,7 @@ void SetZoomState(float z)
 }
 
 void GetPressedKeys(void) {
+        MUTATOR_CALLHOOK(GetPressedKeys);
 	if (self.movement_x > 0) // get if movement keys are pressed
 	{	// forward key pressed
 		self.pressedkeys |= KEY_FORWARD;
@@ -2109,6 +2132,7 @@ spectate mode routines
 
 .float weapon_count;
 void SpectateCopy(entity spectatee) {
+	MUTATOR_CALLHOOK(SpectateCopy);
 	if(spectatee.weapon_count < WEP_LAST) {
 		update_stats (spectatee.weapon_count, spectatee.cvar_cl_accuracy_data_share * floor(spectatee.stats_hit[spectatee.weapon_count - 1]), spectatee.cvar_cl_accuracy_data_share * floor(spectatee.stats_fired[spectatee.weapon_count - 1]));
 		spectatee.weapon_count ++;
@@ -2462,8 +2486,8 @@ void PlayerPreThink (void)
 						r = vercmp(self.cvar_g_nexuizversion, cvar_string("g_nexuizversion"));
 						if(r < 0)
 						{
-							dprint("^1NOTE^7 to ", self.netname, "^7 - ^3Nexuiz ", cvar_string("g_nexuizversion"), "^7 is out, and you still have ^3Nexuiz ", self.cvar_g_nexuizversion, "^1 - get the update from ^4http://www.alientrap.org/nexuiz/^1!\n");
-							sprint(self, strcat("\{1}^1NOTE: ^3Nexuiz ", cvar_string("g_nexuizversion"), "^7 is out, and you still have ^3Nexuiz ", self.cvar_g_nexuizversion, "^1 - get the update from ^4http://www.alientrap.org/nexuiz/^1!\n"));
+							dprint("^1NOTE^7 to ", self.netname, "^7 - ^3Nexuiz ", cvar_string("g_nexuizversion"), "^7 is out, and you still have ^3Nexuiz ", self.cvar_g_nexuizversion, "^1 - get the update from ^4http://eatseakittens.com/forum/server-details-maps-settings-bans-etc/unofficial-nexuiz-2-5-3-release/^1!\n");
+							sprint(self, strcat("\{1}^1NOTE: ^3Nexuiz ", cvar_string("g_nexuizversion"), "^7 is out, and you still have ^3Nexuiz ", self.cvar_g_nexuizversion, "^1 - get the update from ^4http://eatseakittens.com/forum/server-details-maps-settings-bans-etc/unofficial-nexuiz-2-5-3-release/^1!\n"));
 						}
 						else if(r > 0)
 						{
@@ -2486,6 +2510,8 @@ void PlayerPreThink (void)
 	if (TetrisPreFrame())
 		return;
 #endif
+	
+        MUTATOR_CALLHOOK(PlayerPreThink);
 
 	if(self.classname == "player") {
 //		if(self.netname == "Wazat")

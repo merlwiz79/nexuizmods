@@ -94,6 +94,8 @@ string toStringNexuizMutatorsDialog(entity me)
 		s = strcat(s, ", Bloodloss");
 	if(cvar("g_jetpack"))
 		s = strcat(s, ", Jet pack");
+	if(cvar("g_freeze"))
+		s = strcat(s, ", Freeze");
 	if(s == "")
 		return "None";
 	else
@@ -168,6 +170,9 @@ void fillNexuizMutatorsDialog(entity me)
 	me.TR(me);
 		me.TDempty(me, 0.2);
 		me.TD(me, 1, 2, e = makeNexuizCheckBox(0, "g_footsteps", "Footsteps"));
+	me.TR(me);
+		me.TDempty(me, 0.2);
+		me.TD(me, 1, 2, e = makeNexuizCheckBox(0, "g_freeze", "Freeze"));
 	me.TR(me);
 		me.TDempty(me, 0.2);
 		me.TD(me, 1, 2, e = makeNexuizCheckBox(0, "g_midair", "Midair"));

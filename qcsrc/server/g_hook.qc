@@ -280,6 +280,11 @@ void GrapplingHook_Damage (entity inflictor, entity attacker, float damage, floa
 
 void FireGrapplingHook (void)
 {
+	if(g_freeze && self.freeze_frozen == 1)
+                return;
+	if(g_freezetag && self.freeze_frozen == 1)
+                return;
+		
 	local entity missile;
 	local vector org;
 

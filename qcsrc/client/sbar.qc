@@ -1,5 +1,6 @@
 void drawstringright(vector, string, vector, vector, float, float);
 void drawstringcenter(vector, string, vector, vector, float, float);
+void drawcolorcodedstringcenter(vector, string, vector, float, float);
 
 float teamnagger;
 
@@ -458,6 +459,7 @@ void Cmd_Sbar_Help(float argc)
 	print("^3fastest^7                  Time of fastest lap (race/cts)\n");
 	print("^3ticks^7                    Number of ticks (DOM)\n");
 	print("^3takes^7                    Number of domination points taken (DOM)\n");
+	print("^3revivals^7                 Number of revivals preformed\n");
 	print("^3score^7                    Total score\n\n");
 
 	print("Before a field you can put a + or - sign, then a comma separated list\n");
@@ -484,8 +486,8 @@ string Sbar_DefaultColumnLayout()
 		"+lms/lives +lms/rank ",
 		"+kh/caps +kh/pushes +kh/destroyed ",
 		"?+race/laps ?+race/time ?+race/fastest ",
-		"+as/objectives +nexball/faults +nexball/goals ",
-		"-lms,race,nexball/score");
+		"+as/objectives +nexball/faults +nexball/goals ?+freezetag/revivals ?+ctf,ca,tdm,dom,kh,nexball/revivals ",
+		"-lms,race,nexball/score ");
 }
 
 void Cmd_Sbar_SetFields(float argc)
@@ -573,6 +575,7 @@ void Cmd_Sbar_SetFields(float argc)
 				if(str == strtolower(scores_label[j]))
 					goto found; // sorry, but otherwise fteqcc -O3 miscompiles this and warns about "unreachable code"
 :notfound
+	
 			if(str == "frags")
 			{
 				j = SP_FRAGS;
@@ -2537,6 +2540,12 @@ void drawstringcenter(vector position, string text, vector scale, vector rgb, fl
 	drawstring(position, text, scale, rgb, alpha, flag);
 }
 
+void drawcolorcodedstringcenter(vector position, string text, vector scale, float alpha, float flag)
+{
+	position_x = 0.5 * (vid_conwidth - 0.6025 * strlennocol(text) * scale_x);
+	drawcolorcodedstring(position, text, scale, alpha, flag);
+}
+
 float GetAmmoStat(float i)
 {
 	switch(i)
@@ -2646,6 +2655,10 @@ void Sbar_Draw (void)
 
 	sbar_fontsize = Sbar_GetFontsize("sbar_fontsize");
 	sbar_fontsize_spec = Sbar_GetFontsize("sbar_fontsize_spec");
+	
+	if(getstati(STAT_FROZEN))
+		drawfill('0 0 0', bottomright, '0 1 1', 0.6, DRAWFLAG_ADDITIVE);
+	
 	if(sbar_fontsize != sbar_oldfontsize)
 	{
 		Cmd_Sbar_SetFields(0);
@@ -2712,6 +2725,17 @@ void Sbar_Draw (void)
 	{
 		s = "^2Currently in ^1warmup^2 stage!";
 		o = Sbar_DrawNoteLine(o, s);
+	}
+	
+	local float rev;
+	rev = getstatf(STAT_REVIVE_PROGRESS);
+	if(rev)
+	{
+        	local vector revpos;
+        	revpos_y = vid_height / 2 + sbar_fontsize_y * 2;
+
+        	drawfont = sbar_font;
+        	drawcolorcodedstringcenter(revpos, strcat("Revival progress: ^5", ftos(floor(rev * 100)), "%"), sbar_fontsize, 1.0, DRAWFLAG_NORMAL);
 	}
 
 	// move more important stuff more to the middle so its more visible
