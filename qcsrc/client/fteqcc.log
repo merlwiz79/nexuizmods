@@ -1,0 +1,89 @@
+Source file: progs.src
+outputfile: ../../csprogs.dat
+compiling pre.qh
+compiling ../common/util-pre.qh
+compiling Defs.qc
+compiling csqc_constants.qc
+compiling ../common/constants.qh
+compiling csqc_builtins.qc
+compiling ../warpzonelib/anglestransform.qh
+compiling ../warpzonelib/mathlib.qh
+compiling ../warpzonelib/common.qh
+compiling ../warpzonelib/client.qh
+compiling ../common/util.qh
+compiling ../common/items.qh
+compiling ../common/mapinfo.qh
+compiling autocvars.qh
+compiling interpolate.qh
+compiling teamradar.qh
+compiling waypointsprites.qh
+compiling movetypes.qh
+compiling prandom.qh
+compiling bgmscript.qh
+compiling main.qh
+compiling sortlist.qc
+compiling miscfunctions.qc
+compiling teamplay.qc
+compiling ctf.qc
+compiling sbar.qc
+compiling mapvoting.qc
+compiling rubble.qc
+compiling hook.qc
+compiling particles.qc
+compiling laser.qc
+compiling projectile.qc
+compiling gibs.qc
+compiling damage.qc
+compiling casings.qc
+compiling effects.qc
+compiling wall.qc
+compiling modeleffects.qc
+compiling tuba.qc
+compiling Main.qc
+compiling View.qc
+compiling interpolate.qc
+compiling teamradar.qc
+compiling waypointsprites.qc
+compiling movetypes.qc
+compiling prandom.qc
+compiling bgmscript.qc
+compiling ../common/util.qc
+compiling ../common/gamecommand.qc
+compiling ../common/mapinfo.qc
+compiling ../common/items.qc
+compiling ../warpzonelib/anglestransform.qc
+compiling ../warpzonelib/mathlib.qc
+compiling ../warpzonelib/common.qc
+compiling ../warpzonelib/client.qc
+Recognised progs as outdated CSQC module
+Progs should run on any Quake executor
+ 68992 strofs (of 1000000)
+ 35837 numstatements (of 524288)
+   882 numfunctions (of 16384)
+  7751 numglobaldefs (of 32768)
+   343 numfielddefs (299 unique) (of 2048)
+  8511 numpr_globals (of 65536)
+Writing ../../csprogs.dat
+486424 TOTAL SIZE
+Not writing linenumbers file due to conflicting optimisation
+ 36 unique precache_sounds
+ 29 unique precache_models
+Compile Complete
+
+optres_shortenifnots 138
+optres_overlaptemps 12391
+optres_noduplicatestrings 7685
+optres_constantarithmatic 139
+optres_nonvec_parms 7562
+optres_filenames 1171
+optres_assignments 1131
+optres_unreferenced 290
+optres_locals 37322
+optres_function_names 2303
+optres_dupconstdefs 300
+optres_return_only 260
+optres_compound_jumps 599
+optres_stripfunctions 840
+optres_logicops 390
+numtemps 291
+0 warnings

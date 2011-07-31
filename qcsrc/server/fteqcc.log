@@ -1,0 +1,146 @@
+Source file: progs.src
+outputfile: ../../progs.dat
+compiling ../common/util-pre.qh
+compiling sys.qh
+compiling pre-builtins.qh
+compiling builtins.qh
+compiling extensions.qh
+compiling post-builtins.qh
+compiling ../warpzonelib/anglestransform.qh
+compiling ../warpzonelib/mathlib.qh
+compiling ../warpzonelib/common.qh
+compiling ../warpzonelib/util_server.qh
+compiling ../warpzonelib/server.qh
+compiling constants.qh
+compiling ../common/constants.qh
+compiling ../common/util.qh
+compiling ../common/items.qh
+compiling defs.qh
+compiling tturrets/include/turrets_early.qh
+#message:  "with tZork turrets
+compiling campaign.qh
+compiling ../common/campaign_common.qh
+compiling ../common/mapinfo.qh
+compiling ../common/util.qc
+compiling csqcprojectile.qh
+compiling csqceffects.qc
+compiling anticheat.qh
+compiling cheats.qh
+compiling portals.qh
+compiling g_hook.qh
+compiling scores.qh
+compiling ipban.qh
+compiling race.qh
+compiling keyhunt.qh
+compiling antilag.qh
+compiling vote.qh
+compiling playerdemo.qh
+compiling scores_rules.qc
+compiling miscfunctions.qc
+compiling waypointsprites.qc
+compiling bot/bot.qc
+compiling g_subs.qc
+compiling g_tetris.qc
+compiling runematch.qc
+compiling arena.qc
+compiling g_violence.qc
+compiling g_damage.qc
+compiling teamplay.qc
+compiling cl_physics.qc
+compiling verbstack.qc
+compiling movelib.qc
+compiling steerlib.qc
+compiling pathlib/pathlib.qh
+compiling g_world.qc
+compiling g_casings.qc
+compiling t_jumppads.qc
+compiling t_teleporters.qc
+compiling sv_main.qc
+compiling sv_stats.qc
+compiling g_triggers.qc
+compiling g_models.qc
+compiling cl_weaponsystem.qc
+compiling w_common.qc
+compiling w_all.qc
+compiling t_items.qc
+compiling cl_weapons.qc
+compiling cl_impulse.qc
+compiling ent_cs.qc
+compiling cl_player.qc
+compiling cl_client.qc
+compiling t_plats.qc
+compiling antilag.qc
+compiling ctf.qc
+compiling domination.qc
+compiling mode_onslaught.qc
+compiling nexball.qc
+compiling g_hook.qc
+compiling t_swamp.qc
+compiling clientcommands.qc
+compiling vote.qc
+compiling campaign.qc
+compiling ../common/campaign_file.qc
+compiling ../common/campaign_setup.qc
+compiling ../common/gamecommand.qc
+compiling gamecommand.qc
+compiling keyhunt.qc
+compiling assault.qc
+compiling ipban.qc
+compiling ../common/mapinfo.qc
+compiling t_quake3.qc
+compiling t_halflife.qc
+compiling t_quake.qc
+compiling race.qc
+compiling tturrets/include/turrets.qh
+compiling vehicles/vehicles.qh
+compiling scores.qc
+compiling portals.qc
+compiling target_spawn.qc
+compiling func_breakable.qc
+compiling ../common/items.qc
+compiling monsters/defs.qc
+compiling monsters/fight.qc
+compiling monsters/ai.qc
+compiling monsters/m_monsters.qc
+compiling monsters/monster_zombie.qc
+compiling csqcprojectile.qc
+compiling playerdemo.qc
+compiling anticheat.qc
+compiling cheats.qc
+compiling ../warpzonelib/anglestransform.qc
+compiling ../warpzonelib/mathlib.qc
+compiling ../warpzonelib/common.qc
+compiling ../warpzonelib/util_server.qc
+compiling ../warpzonelib/server.qc
+Recognised progs as NetQuake server gamecode
+An enhanced executor will be required (FTE/QF/KK)
+373600 strofs (of 1000000)
+167875 numstatements (of 524288)
+  2531 numfunctions (of 16384)
+ 34517 numglobaldefs (of 65536)
+  2050 numfielddefs (1812 unique) (of 2048)
+ 36664 numpr_globals (of 65536)
+Writing ../../progs.dat
+2247096 TOTAL SIZE
+Not writing linenumbers file due to conflicting optimisation
+103 unique precache_sounds
+145 unique precache_models
+Compile Complete
+
+optres_shortenifnots 703
+optres_overlaptemps 65616
+optres_noduplicatestrings 46435
+optres_constantarithmatic 443
+optres_nonvec_parms 26332
+optres_filenames 3118
+optres_assignments 3697
+optres_unreferenced 239
+optres_locals 166586
+optres_function_names 2849
+optres_dupconstdefs 469
+optres_return_only 668
+optres_compound_jumps 2216
+optres_stripfunctions 2097
+optres_logicops 1361
+numtemps 1395
+0 warnings

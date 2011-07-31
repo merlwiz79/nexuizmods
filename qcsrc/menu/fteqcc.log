@@ -1,0 +1,65 @@
+Source file: progs.src
+outputfile: ../../menu.dat
+compiling config.qh
+compiling ../common/util-pre.qh
+compiling msys.qh
+compiling mbuiltin.qh
+compiling ../warpzonelib/mathlib.qh
+compiling ../common/util.qh
+compiling oo/base.h
+compiling ../common/constants.qh
+compiling ../common/mapinfo.qh
+compiling ../common/campaign_common.qh
+compiling ../common/items.qh
+compiling gamecommand.qh
+compiling menu.qh
+compiling draw.qh
+compiling skin.qh
+compiling nexuiz/util.qh
+compiling oo/classdefs.h
+compiling classes.c
+compiling oo/constructors.h
+compiling classes.c
+compiling oo/implementation.h
+compiling classes.c
+compiling ../common/util.qc
+compiling ../common/gamecommand.qc
+compiling gamecommand.qc
+compiling menu.qc
+compiling draw.qc
+compiling nexuiz/util.qc
+compiling ../common/campaign_file.qc
+compiling ../common/campaign_setup.qc
+compiling ../common/mapinfo.qc
+compiling ../common/items.qc
+compiling ../warpzonelib/mathlib.qc
+Recognised progs as a DP/FTE Menu module
+Progs should run on any Quake executor
+115096 strofs (of 1000000)
+ 46489 numstatements (of 524288)
+  1144 numfunctions (of 16384)
+  9830 numglobaldefs (of 32768)
+  1263 numfielddefs (1220 unique) (of 2048)
+ 10437 numpr_globals (of 65536)
+Writing ../../menu.dat
+658872 TOTAL SIZE
+Not writing linenumbers file due to conflicting optimisation
+Compile Complete
+
+optres_shortenifnots 70
+optres_overlaptemps 15438
+optres_noduplicatestrings 31759
+optres_constantarithmatic 84
+optres_nonvec_parms 11244
+optres_filenames 6626
+optres_assignments 794
+optres_unreferenced 345
+optres_locals 40939
+optres_function_names 1914
+optres_dupconstdefs 239
+optres_return_only 405
+optres_compound_jumps 620
+optres_stripfunctions 744
+optres_logicops 222
+numtemps 347
+0 warnings
