@@ -440,6 +440,9 @@ void Obituary (entity attacker, entity inflictor, entity targ, float deathtype)
 					if((cvar("sv_fragmessage_information_typefrag")) && (targ.BUTTON_CHAT)) {
 						centerprint(attacker, strcat(DAMAGE_CENTERPRINT_SPACER, blood_message, "^1You typefragged ^7", s, GetAdvancedDeathReports(targ)));
 						centerprint(targ, strcat(DAMAGE_CENTERPRINT_SPACER, victim_message, "^1You were typefragged by ^7", a, GetAdvancedDeathReports(attacker)));
+					} else if(deathtype & HITTYPE_HEADSHOT) {
+						centerprint(attacker, strcat(DAMAGE_CENTERPRINT_SPACER, blood_message, "^4You fragged ^7", s, " ^4with a ^1HEADSHOT! ^7", GetAdvancedDeathReports(targ)));
+						centerprint(targ, strcat(DAMAGE_CENTERPRINT_SPACER, victim_message, "^1You were fragged by ^7", a, " ^1with a ^3HEADSHOT!^7 ", GetAdvancedDeathReports(attacker)));
 					} else {
 						centerprint(attacker, strcat(DAMAGE_CENTERPRINT_SPACER, blood_message, "^4You fragged ^7", s, GetAdvancedDeathReports(targ)));
 						centerprint(targ, strcat(DAMAGE_CENTERPRINT_SPACER, victim_message, "^1You were fragged by ^7", a, GetAdvancedDeathReports(attacker)));
@@ -510,6 +513,8 @@ void Obituary (entity attacker, entity inflictor, entity targ, float deathtype)
 					bprint ("^1",s, "^1 was burnt to death by ^1", a, "\n");
 					else if (deathtype == DEATH_CUSTOM)
 						bprint ("^1",s, "^1 ", deathmessage, " by ^1", a, "\n");
+					else if(deathtype & HITTYPE_HEADSHOT)
+						bprint ("^1",s, "^1 was fragged by ", a, " ^1with a ^7HEADSHOT!\n");
 					else
 						bprint ("^1",s, "^1 was fragged by ", a, "\n");
 				}

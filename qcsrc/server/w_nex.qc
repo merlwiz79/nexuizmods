@@ -23,10 +23,17 @@ void W_Nex_Attack (void)
 	W_SetupShot (self, TRUE, 5, "weapons/nexfire.wav", cvar("g_balance_nex_damage"));
 
 	yoda = 0;
+	headshot = 0;
+
 	FireRailgunBullet (w_shotorg, w_shotorg + w_shotdir * MAX_SHOT_DISTANCE, cvar("g_balance_nex_damage"), cvar("g_balance_nex_force"), cvar("g_balance_nex_damagefalloff_mindist"), cvar("g_balance_nex_damagefalloff_maxdist"), cvar("g_balance_nex_damagefalloff_halflife"), cvar("g_balance_nex_damagefalloff_forcehalflife"), WEP_NEX);
 
 	if(yoda && flying)
 		AnnounceTo(self, "yoda");
+		
+	if(headshot)
+	{	
+			AnnounceTo(self, "headshot");
+	}
 
 	//beam and muzzle flash done on client
 	SendCSQCNexBeamParticle();
@@ -76,7 +83,12 @@ float w_nex(float req)
 	else if (req == WR_SUICIDEMESSAGE)
 		w_deathtypestring = "did the impossible";
 	else if (req == WR_KILLMESSAGE)
-		w_deathtypestring = "has been vaporized by";
+	{
+		if(w_deathtype & HITTYPE_HEADSHOT)
+			w_deathtypestring = "got hit in the ^7HEAD ^1by #";
+		else
+			w_deathtypestring = "has been vaporized by";
+	}
 	return TRUE;
 };
 #endif

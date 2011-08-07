@@ -19,6 +19,11 @@ void W_MinstaNex_Attack (void)
 	{
 		if(yoda)
 			AnnounceTo(self, "yoda");
+			
+		if(headshot)
+		{	
+			AnnounceTo(self, "headshot");
+		}
 	}
 	else
 	{
@@ -234,7 +239,12 @@ float w_minstanex(float req)
 	else if (req == WR_SUICIDEMESSAGE)
 		w_deathtypestring = "did the impossible";
 	else if (req == WR_KILLMESSAGE)
-		w_deathtypestring = "has been vaporized by";
+	{
+		if(w_deathtype & HITTYPE_HEADSHOT)
+			w_deathtypestring = "got hit in the ^7HEAD ^1by #";
+		else
+			w_deathtypestring = "has been vaporized by";
+	}
 	else if (req == WR_RESETPLAYER)
 	{
 		self.minstanex_lasthit = 0;
