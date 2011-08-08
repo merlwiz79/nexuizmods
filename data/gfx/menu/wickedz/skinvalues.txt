@@ -46,6 +46,7 @@ COLOR_DIALOG_WEAPONS            '0.4 0.8 0.9'
 COLOR_DIALOG_RADAR              '0.4 0.8 0.9'
 COLOR_DIALOG_SERVERINFO         '0.4 0.8 0.9'
 COLOR_DIALOG_CVARS              '1 0 0'
+COLOR_DIALOG_SCREENSHOTVIEWER   '0.4 0.8 0.9'
 
 // nexposee positions of windows (they are the scale transformation
 // centers, NOT the actual positions of the windows!)

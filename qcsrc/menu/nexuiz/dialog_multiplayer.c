@@ -20,6 +20,7 @@ void fillNexuizMultiplayerDialog(entity me)
 		me.TD(me, 1, 1, e = mc.makeTabButton(mc, "Create",  makeNexuizServerCreateTab()));
 			setDependentStringNotEqual(e, "_cl_name", "Player");
 		me.TD(me, 1, 1, mc.makeTabButton(mc, "Demos",   makeNexuizDemoBrowserTab()));
+		me.TD(me, 1, 1, mc.makeTabButton(mc, "Screenshots",   makeNexuizScreenshotBrowserTab()));
 		me.TD(me, 1, 1, e = mc.makeTabButton(mc, "Player Setup",  makeNexuizPlayerSettingsTab()));
 			if(cvar_string("_cl_name") == "Player")
 				e.onClick(e, e.onClickEntity); // lol animation
